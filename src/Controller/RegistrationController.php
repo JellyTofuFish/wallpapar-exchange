@@ -18,6 +18,7 @@ class RegistrationController extends AbstractController
     {
         $user = new User();
         $user->setPoints('10');
+        $user->setRoles(array('ROLE_USER'));
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
@@ -29,6 +30,7 @@ class RegistrationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+
 
             $this->addFlash('success', 'Successfully registered');
             return $this->redirectToRoute('main_page');

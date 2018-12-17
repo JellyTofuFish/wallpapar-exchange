@@ -1,3 +1,10 @@
+#App\Entity\User:
+#    constraints:
+#        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+#    properties:
+#        plainPassword:
+#            - Valid: { message: "Password fields don't match"}
+
 framework:
     validation:
         email_validation_mode: html5

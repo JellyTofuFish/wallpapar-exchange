@@ -10,14 +10,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields="email", message="Email already taken")
-
+ * @UniqueEntity(fields="username", message="Username already taken")
  */
 class User implements UserInterface
 {
-    public function __construct()
-    {
-        $this->roles = ['ROLE_USER', 'ROLE_ADMIN'];
-    }
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -29,6 +25,8 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank
      * @Assert\Email
+     * @Assert\Length(min=5)
+
      */
     private $email;
 
@@ -38,37 +36,42 @@ class User implements UserInterface
     private $roles = [];
 
     /**
+     *
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\Length(min=6, minMessage="Entered password is too short ( needs to be at least 6 digits long )")
      */
     private $password;
 
     /**
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      * @Assert\Length(max=4096)
+     * @Assert\Length(min=6, minMessage="Entered password is too short ( needs to be at least 6 digits long )")
+     * @Assert\NotBlank( message="Repeat password field can't be blank")
      */
     private $plainPassword;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=5, minMessage="Entered Username is too short ( needs to be at least 5 digits long)")
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $lastName;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $points;
+    private $points= 0;
 
     public function getId(): ?int
     {
@@ -152,7 +155,6 @@ class User implements UserInterface
      */
     public function getSalt()
     {
-        // not needed when using the "bcrypt" algorithm in security.yaml
         return null;
     }
 
@@ -161,8 +163,7 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+         $this->plainPassword = null;
     }
 
     public function getFirstName(): ?string

@@ -5,8 +5,10 @@
 {% block body %}
 
     {{ form_start(form) }}
-    {{ form_errors(form) }}
     <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+        {% for error in form.vars.errors.form.getErrors(true) %}
+            <div class="alert alert-danger">{{ error.message }}</div>
+        {% endfor %}
     {{ form_widget(form.username, { 'attr': {'class':'form-control', 'placeholder':'Username'} }) }}
     {{ form_widget(form.email, { 'attr': {'class':'form-control', 'placeholder':'Email'} }) }}
     {{ form_widget(form.plainPassword.first, { 'attr': {'class':'form-control', 'placeholder':'Password'} }) }}
