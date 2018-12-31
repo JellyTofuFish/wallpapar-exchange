@@ -73,7 +73,21 @@ class User implements UserInterface
      */
     private $points= 0;
 
-    public function getId(): ?int
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime
+     * @var string A "Y-m-d H:i:s" formatted value
+     */
+    private $last_date_online;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $extra_info;
+
+
+
+    public function getid(): ?int
     {
         return $this->id;
     }
@@ -97,7 +111,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     public function getUser(): string
@@ -205,6 +219,30 @@ class User implements UserInterface
     public function setPoints(int $points): self
     {
         $this->points = $points;
+
+        return $this;
+    }
+
+    public function getLastDateOnline(): ?\DateTimeInterface
+    {
+        return $this->last_date_online;
+    }
+
+    public function setLastDateOnline(?\DateTimeInterface $last_date_online): self
+    {
+        $this->last_date_online = $last_date_online;
+
+        return $this;
+    }
+
+    public function getExtraInfo(): ?string
+    {
+        return $this->extra_info;
+    }
+
+    public function setExtraInfo(?string $extra_info): self
+    {
+        $this->extra_info = $extra_info;
 
         return $this;
     }

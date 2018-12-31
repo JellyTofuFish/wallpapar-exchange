@@ -15,6 +15,7 @@
     {{ form_widget(form.plainPassword.second, { 'attr': {'class':'form-control', 'placeholder':'Repeat Password'} }) }}
     {{ form_widget(form.firstName, { 'attr': {'class':'form-control', 'placeholder':'First Name', novalidate: 'novalidate'} }) }}
     {{ form_widget(form.lastName, { 'attr': {'class':'form-control', 'placeholder':'Last Name', novalidate: 'novalidate'}}) }}
+    {{ form_widget(form.extra_info, { 'attr': {'class':'form-control', 'placeholder':'Write about yourself', novalidate: 'novalidate'}}) }}
 
     <button class="btn btn-block btn-outline-dark" type="submit">Register!</button>
     {{ form_end(form) }}

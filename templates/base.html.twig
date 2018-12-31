@@ -25,10 +25,9 @@
             <div class="container">
                 <form class="form-inline my-1">
                   {% if app.user %}
+                      <a href="{{ path('app_logout') }}"><button class="btn btn-outline-light mr-4" type="button" >Log out</button></a>
                       <span class="navbar-text mr-4"> Hello {{ app.user.username|capitalize }}!</span>
                       <span class="navbar-text mr-4"> You currently have: {{ app.user.points }} points</span>
-                      <a href="{{ path('app_logout') }}"><button class="btn btn-outline-light" type="button" >Log out</button></a>
-
                   {% else %}
                       <a href="{{ path('app_login') }}"><button class="mr-3 btn btn-outline-light" type="button" >Sign in</button></a>
                       <a href="{{ path('user_registration') }}"><button class="btn btn-outline-light" type="button" >Register</button></a>

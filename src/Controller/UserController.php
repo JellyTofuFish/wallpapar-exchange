@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class RegistrationController extends AbstractController
+class UserController extends AbstractController
 {
     /**
      * @Route("/registration", name="user_registration")
@@ -41,4 +41,38 @@ class RegistrationController extends AbstractController
             array('form' => $form->createView())
         );
     }
+
+    /**
+     * @Route("/", name="main_page")
+     */
+    public function index()
+    {
+        $message = "";
+        if ($this->isGranted('ROLE_USER')) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $user = $this->getUser();
+            $dateNow= \DateTime::createFromFormat('U', time());
+            $dateDiff = date_diff($dateNow, $user->getLastDateOnline());
+            if ($dateDiff->days > 1) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $points = $user->getPoints();
+                $points += 5;
+                $user->setPoints($points);
+                $user->setLastDateOnline($dateNow);
+                $entityManager->flush();
+                $message = "Welcome back! Added 5 points for today's login";
+            }
+            else {
+                $message = "Greetings!";
+            }
+            return $this->render('main_page/index.html.twig', ['message' => $message] );
+
+        }
+        else {
+            return $this->render('main_page/index.html.twig', ['message' => $message]);
+        }
+    }
+
 }

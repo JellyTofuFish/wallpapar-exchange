@@ -18,10 +18,18 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
 
+        $roles[] = 'ROLE_ADMIN';
+        $date= \DateTime::createFromFormat('U', time());
         $user = new User();
         $user->setEmail("new@example.net");
+        $user->setUsername('example');
         $user->setFirstName("example");
+        $user->setLastName("example");
         $user->setPassword($this->passwordEncoder->encodePassword($user, 'example'));
+        $user->setPoints(20);
+        $user->setLastDateOnline($date);
+        $user->setRoles($roles);
+
         $manager->persist($user);
         $manager->flush();
     }
