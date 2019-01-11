@@ -48,6 +48,8 @@ class UserController extends AbstractController
     public function index()
     {
         $message = "";
+
+
         if ($this->isGranted('ROLE_USER')) {
 
             $entityManager = $this->getDoctrine()->getManager();
