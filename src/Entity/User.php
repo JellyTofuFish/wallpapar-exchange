@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -57,7 +59,7 @@ class User implements UserInterface
     private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=191, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(min=5, minMessage="Entered Username is too short ( needs to be at least 5 digits long)")
      */
@@ -76,7 +78,6 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime
-     * @var string A "Y-m-d H:i:s" formatted value
      */
     private $last_date_online;
 
@@ -84,6 +85,22 @@ class User implements UserInterface
      * @ORM\Column(type="text", nullable=true)
      */
     private $extra_info;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user")
+     */
+    private $comments;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Picture", mappedBy="user", orphanRemoval=true)
+     */
+    private $pictures;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
+    }
 
 
 
@@ -243,6 +260,68 @@ class User implements UserInterface
     public function setExtraInfo(?string $extra_info): self
     {
         $this->extra_info = $extra_info;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComment(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Picture[]
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Picture $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures[] = $picture;
+            $picture->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(Picture $picture): self
+    {
+        if ($this->pictures->contains($picture)) {
+            $this->pictures->removeElement($picture);
+            // set the owning side to null (unless already changed)
+            if ($picture->getUser() === $this) {
+                $picture->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -8,14 +8,15 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20181231120828 extends AbstractMigration
+final class Version20190111172040 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE user ADD last_date_online DATETIME DEFAULT NULL, ADD extra_info LONGTEXT DEFAULT NULL');
+        $this->addSql('ALTER TABLE user CHANGE username username VARCHAR(191) NOT NULL');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649F85E0677 ON user (username)');
     }
 
     public function down(Schema $schema) : void
@@ -23,6 +24,7 @@ final class Version20181231120828 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE user DROP last_date_online, DROP extra_info');
+        $this->addSql('DROP INDEX UNIQ_8D93D649F85E0677 ON user');
+        $this->addSql('ALTER TABLE user CHANGE username username VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
     }
 }
