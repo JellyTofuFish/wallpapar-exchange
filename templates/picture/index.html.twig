@@ -5,39 +5,59 @@
 {% block body %}
     <h1>Picture index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Picture</th>
-                <th>Description</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for picture in pictures %}
-            <tr>
-                <td>{{ picture.id }}</td>
-                <td>{{ picture.title }}</td>
-                <td>{{ picture.picture }}</td>
-                <td>{{ picture.description }}</td>
-                <td>
-                    <a href="{{ path('picture_show', {'id': picture.id}) }}">show</a>
-                    <a href="{{ path('picture_edit', {'id': picture.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5"> no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <div class="container">
-        <a href="">
-            <img class="img-thumbnail" src="{{ asset('/build/landscape-mountain.jpeg') }}" alt="">
-        </a>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm">
+                {% for picture in pictures %}
+                <a href="{{ path('picture_show', {'id': 1 }) }}">
+                    <img class="img-thumbnail mb-4" src="{{ asset('/build/' ~ picture ) }}" alt="">
+                </a>
+                {% endfor %}
+            </div>
+            <div class="col-sm">
+                <a href="">
+
+                </a>
+            </div>
+            <div class="col-sm">
+                <a href="">
+
+                </a>
+            </div>
+        </div>
+        <div class="navigation">
+            {{ knp_pagination_render(pictures) }}
+        </div>
     </div>
+    {#<table class="table">#}
+        {#<thead>#}
+            {#<tr>#}
+                {#<th>Id</th>#}
+                {#<th>Title</th>#}
+                {#<th>Picture</th>#}
+                {#<th>Description</th>#}
+                {#<th>actions</th>#}
+            {#</tr>#}
+        {#</thead>#}
+        {#<tbody>#}
+        {#{% for picture in pictures %}#}
+            {#<tr>#}
+                {#<td>{{ picture.id }}</td>#}
+                {#<td>{{ picture.title }}</td>#}
+                {#<td>{{ picture.picture }}</td>#}
+                {#<td>{{ picture.description }}</td>#}
+                {#<td>#}
+                    {#<a href="{{ path('picture_show', {'id': picture.id}) }}">show</a>#}
+                    {#<a href="{{ path('picture_edit', {'id': picture.id}) }}">edit</a>#}
+                {#</td>#}
+            {#</tr>#}
+        {#{% else %}#}
+            {#<tr>#}
+                {#<td colspan="5"> no records found</td>#}
+            {#</tr>#}
+        {#{% endfor %}#}
+        {#</tbody>#}
+    {#</table>#}
+
     <a href="{{ path('picture_new') }}">Create new</a>
 {% endblock %}
