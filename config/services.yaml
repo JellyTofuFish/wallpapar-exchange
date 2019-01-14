@@ -23,6 +23,46 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+    comment_controller:
+        class: App\Controller\CommentController
+
+    app.service.file_mover:
+        class: App\Service\FileMover
+        arguments:
+            - "@filesystem"
+    app.service.picture_file_path_helper:
+        class: App\Service\PictureFilePathHelper
+        arguments:
+            - "%kernel.project_dir%/public/images/"
+
+    app.service.picture_file_deleter:
+        class: App\Service\PictureFileDeleter
+        arguments:
+            - "@filesystem"
+            - "%kernel.project_dir%/public/images/"
+
+    app.doctrine_event_listener.picture_upload_listener:
+        class: App\Event\Listener\pictureUploadListener
+        arguments:
+            - "@app.service.file_mover"
+            - "@app.service.picture_file_path_helper"
+            - "@security.helper"
+            - "@app.service.picture_file_deleter"
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: preRemove }
+
+    app.doctrine_event_listener.comment__listener:
+        class: App\Event\Listener\commentListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+
+    app.form.type.custom_file_type:
+        class: App\Form\DataTransformer\FileTransformer
+        tags:
+            - { name: form.type, alias: custom_file_type }
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
@@ -37,4 +77,3 @@ knp_paginator:
         filter_value_name: filterValue  # filter value query parameter name
     template:
         pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig'     # sliding pagination controls template
-

@@ -3,5 +3,11 @@ index:
     controller: App\Controller\DefaultController::index
     defaults:
       template: 'index.html.twig'
+
 app_logout:
     path: /logout
+
+easy_admin_bundle:
+    resource: "@EasyAdminBundle/Controller/AdminController.php"
+    prefix: /admin
+    type: annotation

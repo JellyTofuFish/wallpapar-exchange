@@ -1,0 +1,95 @@
+#easy_admin:
+#    entities:
+#        # List the entity class name you want to manage
+#        - App\Entity\Product
+#        - App\Entity\Category
+#        - App\Entity\User
+
+easy_admin:
+    design:
+        menu:
+            - {entity: 'User', icon: 'user' }
+            - {entity: 'Picture', icon: 'image' }
+            - {entity: 'Categoty', icon: 'tag', label: 'Category' }
+            - {entity: 'Comment', icon: 'comments' }
+    formats:
+        date:     'd/m/Y'
+        time:     'H:i'
+        datetime: 'Y-m-d H:i:s'
+    site_name: 'Wallpaper exchange'
+    entities:
+        Categoty:
+            class: App\Entity\Category
+            list:
+                fields:
+                    - 'id'
+                    - 'category'
+                    - 'pictures'
+            form:
+                fields:
+                    - 'category'
+            disabled_actions: ['search']
+        Picture:
+            class: App\Entity\Picture
+            list:
+                fields:
+                    - 'id'
+                    - 'title'
+                    - 'description'
+                    - 'picture'
+                    - 'user'
+                    - 'picture_categories'
+                    - 'comments'
+                    - { property: 'image', type : 'image', base_path: "/images/" }
+            new:
+                fields:
+                    - 'title'
+                    - 'description'
+                    - { property: 'file', type : 'App\Form\CustomFileType' }
+                    - 'picture_categories'
+            edit:
+                fields:
+                    - 'title'
+                    - 'description'
+                    - { property: 'file', type : 'App\Form\CustomFileEditType' }
+                    - 'picture_categories'
+        User:
+            class: App\Entity\User
+            icon: 'user'
+            list:
+                fields:
+                    - 'id'
+                    - 'email'
+                    - 'username'
+                    - 'firstName'
+                    - 'lastName'
+                    - { property: 'points', format: '%d' }
+                    - { property: 'last_date_online', type: 'datetime' }
+                    - { property: 'extra_info', type: 'text' }
+                    - 'roles'
+            form:
+                fields:
+                    - 'email'
+                    - 'username'
+                    - 'firstName'
+                    - 'lastName'
+                    - 'points'
+                    - 'extra_info'
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: true, choices: { 'User': 'ROLE_USER', 'Admin': 'ROLE_ADMIN' }}}
+            disabled_actions: ['new', 'search']
+
+        Comment:
+            class: App\Entity\Comment
+            list:
+                fields:
+                    - 'id'
+                    - 'comment'
+                    - { property: 'date', type: 'datetime' }
+                    - 'user'
+                    - 'picture'
+            form:
+                fields:
+                    - 'comment'
+                    - 'picture'
+                    - { property: 'user', type_options: { disabled: true } }
+

@@ -5,9 +5,11 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PictureRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Picture
 {
@@ -24,10 +26,14 @@ class Picture
     private $title;
 
     /**
-     * @ORM\Column(type="blob")
+     * @ORM\Column(type="string", length=255)
      */
     private $picture;
 
+    /**
+     * @var UploadedFile
+     */
+    private $file;
     /**
      * @ORM\Column(type="text", nullable=true)
      */
@@ -72,7 +78,7 @@ class Picture
         return $this;
     }
 
-    public function getPicture()
+    public function getPicture(): ?string
     {
         return $this->picture;
     }
@@ -94,6 +100,25 @@ class Picture
         $this->description = $description;
 
         return $this;
+    }
+
+    /**
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param UploadedFile|null $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        if ( $file) {
+            $this->setUpdatedAt();
+        }
+        $this->file = $file;
     }
 
     /**
@@ -164,5 +189,62 @@ class Picture
 
         return $this;
     }
+
+    public function __toString() {
+        return (string) $this->title;
+    }
+
+    public function getImage() {
+        return $this->picture;
+    }
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     */
+    private $created_at;
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     */
+    private $updated_at;
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @return $this
+     */
+    public function setCreatedAt()
+    {
+        $this->created_at = new \DateTime('now');
+        $this->updated_at = new \DateTime('now');
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updated_at;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     * @return $this
+     */
+    public function setUpdatedAt()
+    {
+        $this->updated_at = new \DateTime('now');
+        return $this;
+    }
+
 
 }

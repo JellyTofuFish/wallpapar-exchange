@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row justify-content-md-center">
+
+            <div class="col-8">
+                <h1 class="h2 mb-3 font-weight-normal">Register</h1>
+
+                {{ include('user/_formUpdate.html.twig', {'button_label': 'Update'}) }}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

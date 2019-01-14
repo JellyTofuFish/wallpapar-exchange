@@ -3,9 +3,18 @@
 {% block title %}New Picture{% endblock %}
 
 {% block body %}
-    <h1>Create new Picture</h1>
 
-    {{ include('picture/_form.html.twig') }}
+<div class="container">
+    <div class="row justify-content-md-center">
 
-    <a href="{{ path('picture_index') }}">back to list</a>
+        <div class="col-8">
+            <div class="d-flex flex-row justify-content-between align-items-center">
+                <h1 class="h2 mb-3 font-weight-normal">Add a new wallpaper</h1>
+                <a class="btn btn-sm btn-secondary" href="{{ path('picture_index') }}">Back to list</a>
+            </div>
+
+            {{ include('picture/_form.html.twig') }}
+        </div>
+    </div>
+</div>
 {% endblock %}

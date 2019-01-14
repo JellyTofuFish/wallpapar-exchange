@@ -1,0 +1,24 @@
+{{ form_start(form) }}
+
+    {% for error in form.vars.errors.form.getErrors(true) %}
+        <div class="alert alert-danger">{{ error.message }}</div>
+    {% endfor %}
+
+    {{ form_label(form.title) }}
+    {{ form_widget(form.title, { 'attr': {'class':'form-control mb-3', 'placeholder':'Title'} }) }}
+
+    {{ form_label(form.description) }}
+    {{ form_widget(form.description, { 'attr': {'class':'form-control mb-3', 'placeholder':'Description'} }) }}
+
+    File
+    <img class="img-thumbnail mb-4" src="{{ asset('/images/' ~ picture.picture ) }}">
+
+    {{ form_widget(form.user, { 'attr': {'class':'form-control mb-3', 'placeholder':'User', 'hidden':'true'},'value': ""~app.user.id~"" }) }}
+
+    {{ form_label(form.picture_categories) }}
+    {{ form_widget(form.picture_categories, { 'attr': {'class':'form-control mb-3', 'placeholder':'Picture Categories'}}) }}
+
+<button class="btn btn-block btn-dark" type="submit">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+
+

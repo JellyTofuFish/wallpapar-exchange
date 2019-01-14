@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Comment
 {
@@ -23,13 +24,16 @@ class Comment
     private $comment;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     * @Assert\Type(type="\DateTime")
      */
     private $date;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
@@ -60,10 +64,13 @@ class Comment
     {
         return $this->date;
     }
-
-    public function setDate(?\DateTimeInterface $date): self
+    /**
+     * @ORM\PrePersist
+     * @return $this
+     */
+    public function setDate()
     {
-        $this->date = $date;
+        $this->date = new \DateTime('now');
 
         return $this;
     }
@@ -90,5 +97,9 @@ class Comment
         $this->picture = $picture;
 
         return $this;
+    }
+
+    public function __toString() {
+        return (string) $this->comment;
     }
 }

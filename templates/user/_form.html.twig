@@ -1,0 +1,24 @@
+{{ form_start(form) }}
+
+    {% for error in form.vars.errors.form.getErrors(true) %}
+        <div class="alert alert-danger">{{ error.message }}</div>
+    {% endfor %}
+
+    {{ form_label(form.username) }}
+    {{ form_widget(form.username, { 'attr': {'class':'form-control mb-3', 'placeholder':'Username'} }) }}
+    {{ form_label(form.email) }}
+    {{ form_widget(form.email, { 'attr': {'class':'form-control mb-3', 'placeholder':'Email'} }) }}
+    {{ form_label(form.plainPassword.first) }}
+    {{ form_widget(form.plainPassword.first, { 'attr': {'class':'form-control mb-3', 'placeholder':'Password'} }) }}
+    {{ form_label(form.plainPassword.second) }}
+    {{ form_widget(form.plainPassword.second, { 'attr': {'class':'form-control mb-3', 'placeholder':'Repeat Password'} }) }}
+    {{ form_label(form.firstName) }}
+    {{ form_widget(form.firstName, { 'attr': {'class':'form-control mb-3', 'placeholder':'First Name', novalidate: 'novalidate'} }) }}
+    {{ form_label(form.lastName) }}
+    {{ form_widget(form.lastName, { 'attr': {'class':'form-control mb-3', 'placeholder':'Last Name', novalidate: 'novalidate'}}) }}
+    {{ form_label(form.extra_info) }}
+    {{ form_widget(form.extra_info, { 'attr': {'class':'form-control mb-3', 'placeholder':'Write about yourself', novalidate: 'novalidate'}}) }}
+
+    <button class="btn btn-block btn-dark" type="submit">{{ button_label|default('Save') }}</button>
+
+{{ form_end(form) }}

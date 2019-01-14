@@ -12,10 +12,6 @@
         {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
 
-        <!-- Renders a link tag (if your module requires any CSS)
-             <link rel="stylesheet" href="/build/app.css">
-          parent() }}
-          encore_entry_link_tags('checkout') }}-->
         {% endblock %}
 
     </head>
@@ -24,19 +20,14 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <div class="container">
                 <form class="form-inline my-1">
-                  {% if app.user %}
-                      <a href="{{ path('app_logout') }}"><button class="btn btn-outline-light mr-4" type="button" >Log out</button></a>
-                      <span class="navbar-text mr-4"> Hello {{ app.user.username|capitalize }}!</span>
-                      <span class="navbar-text mr-4"> You currently have: {{ app.user.points }} points</span>
-                  {% else %}
-                      <a href="{{ path('app_login') }}"><button class="mr-3 btn btn-outline-light" type="button" >Sign in</button></a>
-                      <a href="{{ path('user_registration') }}"><button class="btn btn-outline-light" type="button" >Register</button></a>
-                  {% endif %}
+                    <span class="navbar-brand p-0" href="{{ path('index') }}">Wallpaper Exchange </span>
                 </form>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
+            <div class="collapse navbar-collapse navbar-dark" id="navbarResponsive">
+                {% block filter %}
+                {% endblock %}
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
                   <a class="nav-link" href="{{ path('index') }}">Home
@@ -44,14 +35,28 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="">About</a>
+                  <a class="nav-link" href="{{ path('picture_index') }}">Wallpapers</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Services</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Contact</a>
-                </li>
+                  <li class="nav-item dropdown navbar-dark">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Profile
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          {% if app.user %}
+                              <a class="dropdown-item disabled">You have: {{ app.user.points }} points</a>
+                              <div class="dropdown-divider"></div>
+                              {% if is_granted('ROLE_ADMIN') %}
+                                  <a class="dropdown-item" href="{{ path('easyadmin') }}">Admin panel</a>
+                              {% endif %}
+                              <a class="dropdown-item" href="{{ path('picture_new') }}">New wallpaper</a>
+                              <a class="dropdown-item" href="{{ path('user_edit', {'id': app.user.id }) }}">Edit profile</a>
+                              <a class="dropdown-item" href="{{ path('app_logout') }}">Log out</a>
+                          {% else %}
+                              <a class="dropdown-item" href="{{ path('app_login') }}">Sign in</a>
+                              <a class="dropdown-item" href="{{ path('user_registration') }}">Register</a>
+                           {% endif %}
+                      </div>
+                  </li>
               </ul>
             </div>
           </div>
@@ -59,17 +64,6 @@
         {% endblock %}
 
         <div class="container move-down">
-
-            {% block flash_messages %}
-                {% for type, messages in app.session.flashbag.all() %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ type }} alert-dismissible" role="alert">
-                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            {{ message | raw }}
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-            {% endblock %}
 
             {% block body %} {% endblock %}
       </div>

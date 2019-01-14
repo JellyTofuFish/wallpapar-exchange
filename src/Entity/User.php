@@ -40,16 +40,16 @@ class User implements UserInterface
     /**
      *
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @Assert\Length(min=6, minMessage="Entered password is too short ( needs to be at least 6 digits long )")
      */
     private $password;
 
     /**
-     * @Assert\NotBlank()
+     * /**
+     * @var string
      * @Assert\Length(max=4096)
      * @Assert\Length(min=6, minMessage="Entered password is too short ( needs to be at least 6 digits long )")
-     * @Assert\NotBlank( message="Repeat password field can't be blank")
      */
     private $plainPassword;
 
@@ -76,8 +76,10 @@ class User implements UserInterface
     private $points= 0;
 
     /**
+     * @var \DateTime
+     *
      * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime
+     * @Assert\Type(type="\DateTime")
      */
     private $last_date_online;
 
@@ -87,7 +89,7 @@ class User implements UserInterface
     private $extra_info;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user", orphanRemoval=true)
      */
     private $comments;
 
@@ -267,12 +269,12 @@ class User implements UserInterface
     /**
      * @return Collection|Comment[]
      */
-    public function getComment(): Collection
+    public function getComments(): Collection
     {
         return $this->comments;
     }
 
-    public function addComment(Comment $comment): self
+    public function addComments(Comment $comment): self
     {
         if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
@@ -282,7 +284,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeComment(Comment $comment): self
+    public function removeComments(Comment $comment): self
     {
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);
@@ -324,5 +326,8 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+    public function __toString() {
+        return (string) $this->username;
     }
 }

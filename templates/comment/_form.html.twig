@@ -1,4 +1,16 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+    {% for error in form.vars.errors.form.getErrors(true) %}
+        <div class="alert alert-danger">{{ error.message }}</div>
+    {% endfor %}
+
+    {{ form_label(form.comment) }}
+    {{ form_widget(form.comment, { 'attr': {'class':'form-control mb-3', 'placeholder':'Comment'} }) }}
+
+    {{ form_widget(form.user, { 'attr': {'class':'form-control mb-3', 'placeholder':'User', 'hidden':'true'}, 'value': ""~app.user.id~""} ) }}
+
+    {{ form_widget(form.picture, {'value': ""~ picture.id~ "", 'attr': {'class':'form-control mb-3', 'placeholder':'Picture', 'hidden':'true' }}) }}
+
+<button class="btn btn-block btn-dark" type="submit">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+

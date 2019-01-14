@@ -3,46 +3,116 @@
 {% block title %}Picture{% endblock %}
 
 {% block body %}
+
+    {% include '@EasyAdmin/default/flash_messages.html.twig' %}
+
     <div class="container">
         <div class="row">
-            <div class="col-3">
-            </div>
             <div class="col-7">
-                <h1>Picture</h1>
-                <a href="{{ asset('/build/' ~ picture ) }}">
-                    <img class="img-thumbnail mb-4" src="{{ asset('/build/' ~ picture ) }}" alt="">
-                </a>
-            </div>
-            <div class="col-2">
+                <div class="d-flex flex-row justify-content-between align-items-center">
+                    <h2 class="h2 mb-3 font-weight-normal">Wallpaper preview</h2>
+                    <a class="btn btn-sm btn-secondary" href="{{ path('picture_index') }}">Back to list</a>
+                </div>
+                <img class="img-thumbnail mb-4" src="{{ asset('/images/' ~ picture.picture ) }}" alt="">
 
+                {% if app.user %}
+                    {% if picture.user.id == app.user.id %}
+                    <h2 class="h2 mb-3 font-weight-normal">Wallpaper management</h2>
+                    <div class="d-flex flex-row mb-3" >
+                        <a class="btn btn-block btn-secondary mt-2" href="{{ path('picture_edit', {'id': picture.id}) }}">Edit</a>
+                        {{ include('picture/_delete_form.html.twig') }}
+                    </div>
+                    {% endif %}
+                {% endif %}
+
+                <h2 class="h2 mb-3 font-weight-normal">Details</h2>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>Uploaded by </th>
+                        <td>{{ picture.user.username|capitalize }}</td>
+                    </tr>
+                    <tr>
+                        <th>Title</th>
+                        <td>{{ picture.title }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ picture.description }}</td>
+                    </tr>
+                    <tr>
+                        <th>Categories</th>
+                        <td>
+                        {% for category in categories %}
+                            {% for c in category %}
+                                <span class="badge badge-pill badge-dark">{{ c }}</span>
+                            {% endfor%}
+                        {% endfor%}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Download</th>
+                        <td>
+                            <a href="{{ asset('/images/' ~ picture.picture) }}">
+                                <button class="btn btn-info">Download wallpaper</button>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="col-5">
+                <div class="d-flex flex-row justify-content-between align-items-center">
+                    <h2 class="h2 mb-3 font-weight-normal">Comments</h2>
+                    {% if app.user %}
+                    {{ include('comment/new.html.twig') }}
+                    {% endif %}
+                </div>
+                {% if comments is empty %}
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <blockquote class="blockquote mb-0">
+                                <p class="card-text">No comments yet</p>
+                                <footer class="blockquote-footer">Be the first to write a comment!</footer>
+                            </blockquote>
+                        </div>
+                        <div class="card-footer text-muted">
+                        </div>
+                    </div>
+
+
+                {% else %}
+                    {% for comment in comments %}
+                        <div class="card text-left mb-2">
+                            <div class="card-body">
+                                <p class="card-text mb-0">{{ comment.comment }}</p>
+                                <div class="d-flex flex-row justify-content-between align-items-center">
+                                    <footer class="blockquote-footer">Posted by: {{ comment.user.username }}</footer>
+                                    {% if app.user %}
+                                        {% if picture.user.id == app.user.id %}
+                                        {{ include('comment/_delete_form.html.twig') }}
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="card-footer text-muted">
+                                {% set difference = date(comment.date|date('Y-m-d H:i:s')).diff(date('now'|date('Y-m-d H:i:s'))) %}
+                                {% if difference.days == 0 %}
+                                    Posted: {{  difference.h }}h. {{  difference.i }}m. {{  difference.s }}s. ago
+                                {% else %}
+                                    Posted: {{  difference.days }} days ago
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ picture.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ picture.title }}</td>
-            </tr>
-            <tr>
-                <th>Picture</th>
-                <td>{{ picture.picture }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ picture.description }}</td>
-            </tr>
-        </tbody>
-    </table>
 
-    <a href="{{ path('picture_index') }}">back to list</a>
 
-    <a href="{{ path('picture_edit', {'id': picture.id}) }}">edit</a>
 
-    {{ include('picture/_delete_form.html.twig') }}
+
 {% endblock %}

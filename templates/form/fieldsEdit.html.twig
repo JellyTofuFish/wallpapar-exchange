@@ -1,0 +1,10 @@
+{% block custom_file_edit_widget %}
+    <div class="custom-file">
+
+        {% if file_uri is defined and file_uri is not null %}
+            <figure class="figure">
+                <img width="350" src="{{ file_uri }}" class="figure-img img-fluid rounded">
+            </figure>
+        {% endif %}
+    </div>
+{% endblock %}

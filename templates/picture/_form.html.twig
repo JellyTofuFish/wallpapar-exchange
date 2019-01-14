@@ -1,4 +1,25 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+    {% for error in form.vars.errors.form.getErrors(true) %}
+        <div class="alert alert-danger">{{ error.message }}</div>
+    {% endfor %}
+
+    {{ form_label(form.title) }}
+    {{ form_widget(form.title, { 'attr': {'class':'form-control mb-3', 'placeholder':'Title'} }) }}
+
+
+    {{ form_label(form.file) }}
+    {{ form_widget(form.file, { 'attr': {'class':'form-control mb-3', 'placeholder':'File'} }) }}
+
+    {{ form_label(form.description) }}
+    {{ form_widget(form.description, { 'attr': {'class':'form-control mb-3', 'placeholder':'Description'} }) }}
+
+    {{ form_widget(form.user, { 'attr': {'class':'form-control mb-3', 'placeholder':'User', 'hidden':'true'}, 'value': ""~app.user.id~"" }) }}
+
+    {{ form_label(form.picture_categories) }}
+    {{ form_widget(form.picture_categories, { 'attr': {'class':'form-control mb-3', 'placeholder':'Picture Categories'}}) }}
+
+    <button class="btn btn-block btn-secondary" type="submit">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+
+

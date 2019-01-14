@@ -4,10 +4,11 @@
 
 {% block body %}
 
-<div class="container">
-    <h1 class="mt-5">Logo Nav by Start Bootstrap</h1>
+    {% include '@EasyAdmin/default/flash_messages.html.twig' %}
+<div class="jumbotron text-center">
     <h1>{{ message }}</h1>
-    <p>The logo in the navbar is now a default Bootstrap feature in Bootstrap 4! Make sure to set the width and height of the logo within the HTML. For best results, it's recommended that you use an SVG image as your logo.</p>
+    <h2 class="mt-5">Welcome to Wallpaper exchange</h2>
+    <p class="lead">All photos on Wallpaper exchange are free for personal and commercial purposes.</p>
 </div>
 
 {% endblock %}

@@ -35,7 +35,8 @@ class UserType extends AbstractType
                 'required' => false
             ])
             ->add('extra_info', TextareaType::class, [
-                'required' => false
+                'required' => false,
+                'label' => 'Extra info'
             ])
         ;
     }
