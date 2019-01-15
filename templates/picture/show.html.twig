@@ -29,6 +29,19 @@
                 <table class="table">
                     <tbody>
                     <tr>
+                        <td colspan="2">
+                            {% if app.user %}
+                                <form method="post" action="{{ path('picture_download', {'id': picture.id}) }}">
+                                    <div class="d-flex flex-column justify-content-center align-items-center">
+                                        <button class="btn btn-info">Download Wallpaper</button>
+                                        <span class="badge badge-pill badge-light">*Downloading costs 1 point</span>
+                                    </div>
+                                </form>
+                            {% endif %}
+
+                        </td>
+                    </tr>
+                    <tr>
                         <th>Uploaded by </th>
                         <td>{{ picture.user.username|capitalize }}</td>
                     </tr>
@@ -50,14 +63,6 @@
                         {% endfor%}
                         </td>
                     </tr>
-                    <tr>
-                        <th>Download</th>
-                        <td>
-                            <a href="{{ asset('/images/' ~ picture.picture) }}">
-                                <button class="btn btn-info">Download wallpaper</button>
-                            </a>
-                        </td>
-                    </tr>
                     </tbody>
                 </table>
 
@@ -73,8 +78,8 @@
                     <div class="card text-center">
                         <div class="card-body">
                             <blockquote class="blockquote mb-0">
-                                <p class="card-text">No comments yet</p>
-                                <footer class="blockquote-footer">Be the first to write a comment!</footer>
+                                <p class="card-text">No comments</p>
+                                <footer class="blockquote-footer">Be the first to write one!</footer>
                             </blockquote>
                         </div>
                         <div class="card-footer text-muted">

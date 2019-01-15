@@ -9,8 +9,8 @@
 
         <div class="col-8">
             <div class="d-flex flex-row justify-content-between align-items-center">
-                <h1 class="h2 mb-3 font-weight-normal">Edit Picture</h1>
-                <a class="btn btn-sm btn-secondary" href="{{ path('picture_index') }}">Back to list</a>
+                <h1 class="h2 mb-3 font-weight-normal">Edit Wallpaper</h1>
+                <a class="btn btn-sm btn-secondary" href="{{ path('picture_show', {'id': picture.id }) }}">Back to wallpaper</a>
             </div>
 
             {{ include('picture/_formUpdate.html.twig', {'button_label': 'Update'}) }}

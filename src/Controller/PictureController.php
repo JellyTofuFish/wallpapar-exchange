@@ -14,6 +14,7 @@ use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -24,6 +25,13 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class PictureController extends AbstractController
 {
+
+    private $kernel;
+    public function __construct( KernelInterface $kernel)
+    {
+        $this->kernel = $kernel;
+    }
+
     /**
      * @Route("", name="picture_index", methods={"GET"})
      * @param PictureRepository $pictureRepository
@@ -34,7 +42,6 @@ class PictureController extends AbstractController
     {
         $query = $pictureRepository->findAll();
         $categories= $categoryRepository->findAll();
-
         $pagination = $paginator->paginate(
             $query, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
@@ -81,15 +88,13 @@ class PictureController extends AbstractController
         $form = $this->createForm(PictureType::class, $picture);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($picture);
             $entityManager->flush();
-            $this->addFlash('success', 'Picture created');
-            return $this->redirectToRoute('picture_index');
+            $this->addFlash('success', 'Congratulations! You uploaded a new wallpaper. \n You can edit it or add a new comment whenever you like');
+            return $this->redirectToRoute('picture_show', ['id' => $picture->getId()] );
         }
-
         return $this->render('picture/new.html.twig', [
             'picture' => $picture,
             'form' => $form->createView(),
@@ -125,11 +130,35 @@ class PictureController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($comment);
             $entityManager->flush();
-            $this->addFlash('success', 'Comment was successfully created');
+            $this->addFlash('success', 'Your new comment was posted');
             return $this->redirectToRoute('picture_show', ['id' => $picture->getId()]);
         }
         return $this->render('picture/show.html.twig', ['picture' => $picture, 'categories' => $categories, 'comments' => $comments, 'form' => $form->createView()]);
     }
+
+    /**
+     * @Route("/{id}/download", name="picture_download", methods={"POST"})
+     */
+    public function updateDownload(Request $request, Picture $picture): Response
+    {
+        $user = $this->getUser();
+        $points = $user->getPoints();
+        if ( $points > 0 ) {
+            $points -= 1;
+            $user->setPoints($points);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+            $this->addFlash('primary', 'You spent 1 point for downloading the wallpaper');
+            $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
+            $filename = $baseurl . '/images/' . $picture->getPicture();
+            return $this->redirect($filename);
+        }
+        else {
+            $this->addFlash('error', 'You don\'t have enough points to download the wallpaper');
+            return $this->redirectToRoute('picture_show', ['id' => $picture->getId()] );
+        }
+    }
+
 
     /**
      * @Route("/{id}/edit", name="picture_edit", methods={"GET","POST"})
@@ -142,7 +171,7 @@ class PictureController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('success', 'Picture updated');
+            $this->addFlash('success', 'Picture successfully updated');
             return $this->redirectToRoute('picture_show', ['id' => $picture->getId()]);
 
         }

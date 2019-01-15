@@ -20,7 +20,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <div class="container">
                 <form class="form-inline my-1">
-                    <span class="navbar-brand p-0" href="{{ path('index') }}">Wallpaper Exchange </span>
+                    <a class="navbar-brand p-0" href="{{ path('index') }}">Wallpaper Exchange </a>
                 </form>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
@@ -29,7 +29,7 @@
                 {% block filter %}
                 {% endblock %}
               <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                   <a class="nav-link" href="{{ path('index') }}">Home
                     <span class="sr-only">(current)</span>
                   </a>
@@ -48,7 +48,7 @@
                               {% if is_granted('ROLE_ADMIN') %}
                                   <a class="dropdown-item" href="{{ path('easyadmin') }}">Admin panel</a>
                               {% endif %}
-                              <a class="dropdown-item" href="{{ path('picture_new') }}">New wallpaper</a>
+                              <a class="dropdown-item" href="{{ path('picture_new') }}">Add a wallpaper</a>
                               <a class="dropdown-item" href="{{ path('user_edit', {'id': app.user.id }) }}">Edit profile</a>
                               <a class="dropdown-item" href="{{ path('app_logout') }}">Log out</a>
                           {% else %}

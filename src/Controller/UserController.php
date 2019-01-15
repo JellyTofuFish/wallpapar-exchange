@@ -51,7 +51,7 @@ class UserController extends AbstractController
      */
     public function index()
     {
-        $message = "";
+        $message = "Greetings!";
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
 

@@ -46,6 +46,7 @@ easy_admin:
                     - 'title'
                     - 'description'
                     - { property: 'file', type : 'App\Form\CustomFileType' }
+                    - 'user'
                     - 'picture_categories'
             edit:
                 fields:
@@ -91,5 +92,5 @@ easy_admin:
                 fields:
                     - 'comment'
                     - 'picture'
-                    - { property: 'user', type_options: { disabled: true } }
+                    - { property: 'user' }
 
