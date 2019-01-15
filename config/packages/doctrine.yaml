@@ -10,10 +10,10 @@ doctrine:
         # configure these for your database server
         driver: 'pdo_mysql'
         host: 'q7cxv1zwcdlw7699.chr7pe7iynqr.eu-west-1.rds.amazonaws.com'
-        username: 'qerj1c7wj6jp4egb'
+        user: 'qerj1c7wj6jp4egb'
         password: '	spwx9g94hy1v1ri0'
         port: 3306
-        database: 'e8d552v74xues8a9'
+        dbname: 'e8d552v74xues8a9'
         server_version: '5.6'
         charset: utf8mb4
         default_table_options:
