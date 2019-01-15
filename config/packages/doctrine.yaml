@@ -3,17 +3,17 @@ parameters:
     # This allows you to run cache:warmup even if your
     # environment variables are not available yet.
     # You should not need to change this value.
-    env(DATABASE_URL): 'mysql://qerj1c7wj6jp4egb:spwx9g94hy1v1ri0@q7cxv1zwcdlw7699.chr7pe7iynqr.eu-west-1.rds.amazonaws.com:3306/e8d552v74xues8a9'
+    env(DATABASE_URL): ''
 
 doctrine:
     dbal:
         # configure these for your database server
         driver: 'pdo_mysql'
-        host: 'q7cxv1zwcdlw7699.chr7pe7iynqr.eu-west-1.rds.amazonaws.com'
-        user: 'qerj1c7wj6jp4egb'
-        password: '	spwx9g94hy1v1ri0'
-        port: 3306
-        dbname: 'e8d552v74xues8a9'
+        # host: 'www.db4free.net'
+        # user: 'qerj1c7wj6jp4egb'
+        # password: 'spwx9g94hy1v1ri0'
+        # port: 3306
+        # dbname: 'wallpaperexch'
         server_version: '5.6'
         charset: utf8mb4
         default_table_options:
